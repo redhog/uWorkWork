@@ -20,7 +20,7 @@ def execute(macro, argstr):
     start = uWorkWork.Parser.read_datetime(args['start'])
     length = uWorkWork.Parser.read_timedelta(args['length'])
     end = uWorkWork.Parser.read_datetime(args['end'])
-    total, byStatysPeriodCategory = uWorkWork.Sort.sort(
+    total, byStatusPeriodCategory = uWorkWork.Sort.sort(
         items,
         [uWorkWork.Sort.inPeriod(start, end),
          uWorkWork.Sort.byStatus,
@@ -41,7 +41,7 @@ def execute(macro, argstr):
     </form>
     """ % args)
     result.append('<ul>')
-    for status, (statusTotal, byPeriodCategory) in byStatysPeriodCategory.iteritems():
+    for status, (statusTotal, byPeriodCategory) in byStatusPeriodCategory.iteritems():
         statustag = args['category'] + '-' + str(status)
         result.append('<li><a href="#%s">%s (Total: %s)</a></li>' % (statustag, ['', 'Due items', 'In progress', 'Done'][status], statusTotal))
         result.append('<ul>')
@@ -56,7 +56,7 @@ def execute(macro, argstr):
         result.append('</ul>')
     result.append('</ul>')
 
-    for status, (statusTotal, byPeriodCategory) in byStatysPeriodCategory.iteritems():
+    for status, (statusTotal, byPeriodCategory) in byStatusPeriodCategory.iteritems():
         statustag = args['category'] + '-' + str(status)
         result.append('<div class="status"><a name="%s"><h1>%s (Total: %s)</h1></a>' % (statustag, ['', 'Due items', 'In progress', 'Done'][status], statusTotal))
         for period, (periodTotal, byCategory) in byPeriodCategory.iteritems():
