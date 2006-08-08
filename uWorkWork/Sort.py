@@ -8,7 +8,7 @@ def byNone(items, subSorts):
     return (total, items)
 
 def byPage(items, subSorts):
-    byPage = {}
+    byPage = Utils.reversesorteddict()
     total = datetime.timedelta(0)
     for item in items:
         total += item['length']
@@ -21,7 +21,7 @@ def byPage(items, subSorts):
     return (total, byPage)
 
 def byCategory(items, subSorts):
-    byCategory = {}
+    byCategory = Utils.reversesorteddict()
     total = datetime.timedelta(0)
     for item in items:
         total += item['length']
@@ -34,7 +34,7 @@ def byCategory(items, subSorts):
     return (total, byCategory)
 
 def byStatus(items, subSorts):
-    byStatus = {}
+    byStatus = Utils.reversesorteddict()
     total = datetime.timedelta(0)
     for item in items:
         total += item['length']
@@ -48,7 +48,7 @@ def byStatus(items, subSorts):
 def byPeriod(start, length):
     mslength = Utils.mstime(length)
     def byPeriod(items, subSorts):
-        byPeriod = {}
+        byPeriod = Utils.reversesorteddict()
         total = datetime.timedelta(0)
         for item in items:
             assert start <= item['start']

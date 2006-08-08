@@ -17,13 +17,14 @@ def execute(macro, argstr):
     for item in macro.form.items():
         args[item[0]]=item[1][0]
     items = uWorkWork.Parser.parseCategory(request, args['category'])
+    start = uWorkWork.Parser.read_datetime(args['start'])
+    length = uWorkWork.Parser.read_timedelta(args['length'])
+    end = uWorkWork.Parser.read_datetime(args['end'])
     total, byStatysPeriodCategory = uWorkWork.Sort.sort(
         items,
-        [uWorkWork.Sort.inPeriod(uWorkWork.Parser.read_datetime(args['start']),
-                                 uWorkWork.Parser.read_datetime(args['end'])),
+        [uWorkWork.Sort.inPeriod(start, end),
          uWorkWork.Sort.byStatus,
-         uWorkWork.Sort.byPeriod(uWorkWork.Parser.read_datetime(args['start']),
-                                 uWorkWork.Parser.read_timedelta(args['length'])),
+         uWorkWork.Sort.byPeriod(start, length),
          uWorkWork.Sort.byCategory])
     result = []
 
@@ -46,7 +47,7 @@ def execute(macro, argstr):
         result.append('<ul>')
         for period, (periodTotal, byCategory) in byPeriodCategory.iteritems():
             periodtag = statustag + '-' + str(period)
-            result.append('<li><a href="#%s">%s (Total: %s)</a></li>' % (periodtag, period, periodTotal))
+            result.append('<li><a href="#%s">%s - %s (Total: %s)</a></li>' % (periodtag, period, period + length, periodTotal))
             result.append('<ul>')
             for category, (categoryTotal, items) in byCategory.iteritems():
                 categorytag = periodtag + '-' + category
@@ -60,7 +61,7 @@ def execute(macro, argstr):
         result.append('<div class="status"><a name="%s"><h1>%s (Total: %s)</h1></a>' % (statustag, ['', 'Due items', 'In progress', 'Done'][status], statusTotal))
         for period, (periodTotal, byCategory) in byPeriodCategory.iteritems():
             periodtag = statustag + '-' + str(period)
-            result.append('<div class="period"><a name="%s"><h2>%s (Total: %s)</h2></a>' % (periodtag, period, periodTotal))
+            result.append('<div class="period"><a name="%s"><h2>%s - %s (Total: %s)</h2></a>' % (periodtag, period, period + length, periodTotal))
             for category, (categoryTotal, items) in byCategory.iteritems():
                 categorytag = periodtag + '-' + category
                 result.append('<div class="category"><a name="%s"><h3>%s (Total: %s)</h3></a>' % (categorytag, category, categoryTotal))
