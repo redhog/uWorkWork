@@ -6,21 +6,21 @@ def timedelta_regexp(prefix):
     else:
         open,close='?P<' + prefix,'>'
     return r"""
-    ((%(open)syears%(close)s[0-9]+)\s*y(ears)?)?
+    ((%(open)syears%(close)s[0-9]+)\s*y(ears?)?)?
     \s*
-    ((%(open)sweeks%(close)s[0-9]+)\s*w(eeks)?)?
+    ((%(open)sweeks%(close)s[0-9]+)\s*w(eeks?)?)?
     \s*
-    ((%(open)sdays%(close)s[0-9]+)\s*d(ays)?)?
+    ((%(open)sdays%(close)s[0-9]+)\s*d(ays?)?)?
     \s*
-    ((%(open)shours%(close)s[0-9]+)\s*h(ours)?)?
+    ((%(open)shours%(close)s[0-9]+)\s*h(ours?)?)?
     \s*
-    ((%(open)sminutes%(close)s[0-9]+)\s*m(inutes)?)?
+    ((%(open)sminutes%(close)s[0-9]+)\s*m(inutes?)?)?
     \s*
-    ((%(open)sseconds%(close)s[0-9]+)\s*s(econds)?)?
+    ((%(open)sseconds%(close)s[0-9]+)\s*s(econds?)?)?
     \s*
-    ((%(open)smiliseconds%(close)s[0-9]+)\s*(ms | miliseconds))?
+    ((%(open)smiliseconds%(close)s[0-9]+)\s*(ms | miliseconds?))?
     \s*
-    ((%(open)smicroseconds%(close)s[0-9]+)\s*(us | microseconds))?
+    ((%(open)smicroseconds%(close)s[0-9]+)\s*(us | microseconds?))?
     """ % {'open': open, 'close': close}
 
 timedelta_regexp_pattern = re.compile(r'^%s$' % timedelta_regexp(''), re.UNICODE + re.MULTILINE + re.IGNORECASE + re.DOTALL + re.VERBOSE)
