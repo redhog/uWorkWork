@@ -71,7 +71,7 @@ def inPeriod(start, end):
         total = datetime.timedelta(0)
         for item in items:
             if start <= item['start'] <= end:
-                total += item.length
+                total += item['length']
                 inPeriod.append(item)
         if subSorts:
             dummy, inPeriod = subSorts[0](inPeriod, subSorts[1:])
