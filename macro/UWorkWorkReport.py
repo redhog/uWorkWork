@@ -19,10 +19,11 @@ def execute(macro, argstr):
     items = uWorkWork.Parser.parseCategory(request, args['category'])
     total, byStatysPeriodCategory = uWorkWork.Sort.sort(
         items,
-        [uWorkWork.Sort.byStatus,
+        [uWorkWork.Sort.inPeriod(uWorkWork.Parser.read_datetime(args['start']),
+                                 uWorkWork.Parser.read_datetime(args['end'])),
+         uWorkWork.Sort.byStatus,
          uWorkWork.Sort.byPeriod(uWorkWork.Parser.read_datetime(args['start']),
-                                       uWorkWork.Parser.read_timedelta(args['length']),
-                                       uWorkWork.Parser.read_datetime(args['end'])),
+                                 uWorkWork.Parser.read_timedelta(args['length'])),
          uWorkWork.Sort.byCategory])
     result = []
 
