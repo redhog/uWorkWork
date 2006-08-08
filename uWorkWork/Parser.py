@@ -7,19 +7,19 @@ def timedelta_regexp(prefix):
         open,close='?P<' + prefix,'>'
     return r"""
     ((%(open)syears%(close)s[0-9]+)\s*y(ears?)?)?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)sweeks%(close)s[0-9]+)\s*w(eeks?)?)?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)sdays%(close)s[0-9]+)\s*d(ays?)?)?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)shours%(close)s[0-9]+)\s*h(ours?)?)?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)sminutes%(close)s[0-9]+)\s*m(inutes?)?)?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)sseconds%(close)s[0-9]+)\s*s(econds?)?)?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)smiliseconds%(close)s[0-9]+)\s*(ms | miliseconds?))?
-    \s*
+    \s*(?:and)?\s*
     ((%(open)smicroseconds%(close)s[0-9]+)\s*(us | microseconds?))?
     """ % {'open': open, 'close': close}
 
