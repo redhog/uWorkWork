@@ -8,7 +8,7 @@ def byNone(items, subSorts):
     return (total, items)
 
 def byPage(items, subSorts):
-    byPage = {}
+    byPage = Utils.reversesorteddict()
     total = datetime.timedelta(0)
     for item in items:
         total += item['length']
@@ -21,7 +21,7 @@ def byPage(items, subSorts):
     return (total, byPage)
 
 def byCategory(items, subSorts):
-    byCategory = {}
+    byCategory = Utils.reversesorteddict()
     total = datetime.timedelta(0)
     for item in items:
         total += item['length']
@@ -34,7 +34,7 @@ def byCategory(items, subSorts):
     return (total, byCategory)
 
 def byStatus(items, subSorts):
-    byStatus = {}
+    byStatus = Utils.reversesorteddict()
     total = datetime.timedelta(0)
     for item in items:
         total += item['length']
@@ -45,26 +45,39 @@ def byStatus(items, subSorts):
             byStatus[status] = subSorts[0](items, subSorts[1:])
     return (total, byStatus)
 
-def byPeriod(start, length, end):
+def byPeriod(start, length):
     mslength = Utils.mstime(length)
     def byPeriod(items, subSorts):
-        byPeriod = {}
+        byPeriod = Utils.reversesorteddict()
         total = datetime.timedelta(0)
         for item in items:
-            if start <= item['start'] <= end:
-                total += item['length']
-                # For some reason timedelta doesn't support the % operation, so we do it by hand...:
-                offset = (item['start'] - start)
-                msoffset = Utils.mstime(offset)
-                bucket = start + Utils.tdtime((msoffset // mslength) * mslength)
-                if bucket not in byPeriod: byPeriod[bucket] = []
-                byPeriod[bucket].append(item)
+            assert start <= item['start']
+            total += item['length']
+            # For some reason timedelta doesn't support the % operation, so we do it by hand...:
+            offset = (item['start'] - start)
+            msoffset = Utils.mstime(offset)
+            bucket = start + Utils.tdtime((msoffset // mslength) * mslength)
+            if bucket not in byPeriod: byPeriod[bucket] = []
+            byPeriod[bucket].append(item)
         if subSorts:
             for bucket, items in byPeriod.iteritems():
                 byPeriod[bucket] = subSorts[0](items, subSorts[1:])
         return (total, byPeriod)
     return byPeriod
-        
+
+def inPeriod(start, end):
+    def inPeriod(items, subSorts):
+        inPeriod = []
+        total = datetime.timedelta(0)
+        for item in items:
+            if start <= item['start'] <= end:
+                total += item['length']
+                inPeriod.append(item)
+        if subSorts:
+            dummy, inPeriod = subSorts[0](inPeriod, subSorts[1:])
+        return (total, inPeriod)
+    return inPeriod
+
 def sort(items, ops = []):
     ops += [byNone]
     return ops[0](items, ops[1:])
